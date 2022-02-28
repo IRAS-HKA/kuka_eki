@@ -53,7 +53,7 @@ RUN rosdep update
 RUN mkdir -p /home/"$USER"/ws_moveit2/src
 RUN cd /home/"$USER"/ws_moveit2/src && git clone https://github.com/ros-planning/moveit2.git -b foxy && vcs import < moveit2/moveit2.repos && rosdep install -r --from-paths . --ignore-src --rosdistro foxy -y
 
-RUN cd /home/"$USER"/ws_moveit2/src/geometric_shapes && git checkout foxy
+#RUN cd /home/"$USER"/ws_moveit2/src/geometric_shapes && git checkout foxy
 RUN cd /home/$USER/ws_moveit2 && . /opt/ros/$ROS_DISTRO/setup.sh && colcon build --event-handlers desktop_notification- status- --cmake-args -DCMAKE_BUILD_TYPE=Release
 RUN echo "source /home/$USER/ws_moveit2/install/setup.bash" >> /home/$USER/.bashrc
 
