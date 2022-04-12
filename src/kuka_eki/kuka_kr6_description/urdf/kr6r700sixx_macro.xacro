@@ -4,7 +4,7 @@
     <xacro:include filename="$(find kuka_common)/urdf/common_materials.xacro"/>
     <xacro:include filename="$(find kuka_common)/urdf/kuka.ros2_control.xacro"/>
 
-    <xacro:macro name="kuka_kr6r700sixx" params="prefix initial_positions_file robot_ip robot_port use_fake_hardware">
+    <xacro:macro name="kuka_kr6r700sixx" params="prefix initial_positions_file robot_ip eki_robot_port use_fake_hardware">
         <link name="${prefix}base_link">
             <visual>
                 <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -178,7 +178,7 @@
         </joint>
         <xacro:kuka_ros2_control name="kuka_control" robot_prefix="${prefix}"
                                  initial_positions_file="${initial_positions_file}"
-                                 robot_ip="${robot_ip}" robot_port="${robot_port}"
+                                 robot_ip="${robot_ip}" eki_robot_port="${eki_robot_port}"
                                  use_fake_hardware="${use_fake_hardware}"/>
     </xacro:macro>
 </robot>

@@ -14,7 +14,7 @@ def generate_launch_description():
     ))
 
     declared_arguments.append(DeclareLaunchArgument(
-        "eki_port",
+        "eki_io_port",
         default_value="54601",
         description="Port by which the robot can be reached."
     ))
@@ -26,7 +26,7 @@ def generate_launch_description():
     ))
 
     robot_ip = LaunchConfiguration("robot_ip")
-    eki_port = LaunchConfiguration("eki_port")
+    eki_io_port = LaunchConfiguration("eki_io_port")
     n_io = LaunchConfiguration("n_io")
 
     eki_io_node = Node(
@@ -34,7 +34,7 @@ def generate_launch_description():
         executable="eki_io_node",
         parameters=[
             {"robot_ip": robot_ip,
-             "eki_port": eki_port,
+             "eki_io_port": eki_io_port,
              "n_io": n_io}
         ],
         emulate_tty=True,

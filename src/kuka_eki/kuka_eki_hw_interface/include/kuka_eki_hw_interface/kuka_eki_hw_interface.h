@@ -1,4 +1,5 @@
 // Copyright 2020 ros2_control Development Team
+// Modifications copyright (c) 2021 Gergely Sóti
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.

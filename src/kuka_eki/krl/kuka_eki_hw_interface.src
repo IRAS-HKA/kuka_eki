@@ -4,6 +4,7 @@ def  kuka_eki_hw_interface()
    ; Software License Agreement (BSD License)
    ;
    ; Copyright (c) 2018, 3M
+   ; Modifications copyright (c) 2021 Gergely Sóti
    ; All rights reserved.
    ;
    ; Redistribution and use in source and binary forms, with or without
@@ -30,7 +31,8 @@ def  kuka_eki_hw_interface()
    ; ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
    ; POSSIBILITY OF SUCH DAMAGE.
 
-   ; Author: Brett Hemes (3M) <brhemes@mmm.com>
+   ; This software is derived work of Brett Hemes (3M) <brhemes@mmm.com>
+   ; Adaptation by Gergely Sóti, H-KA iRAS Prof. Hein, 2021; gergely.soti@h-ka.de
 
    ; Declarations
    decl axis joint_pos_tgt

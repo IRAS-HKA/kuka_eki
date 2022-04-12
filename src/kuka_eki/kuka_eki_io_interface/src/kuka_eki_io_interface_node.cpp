@@ -1,3 +1,17 @@
+// Copyright (c) 2021 Gergely Sóti
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 #include <chrono>
 #include <functional>
 #include <memory>
@@ -14,18 +28,18 @@ int main(int argc, char * argv[])
 
     rclcpp::Rate loop_rate(2);
     node->declare_parameter("robot_ip");
-    node->declare_parameter("eki_port");
+    node->declare_parameter("eki_io_port");
     node->declare_parameter("n_io");
 
     std::string robot_ip;
     node->get_parameter("robot_ip", robot_ip);
-    int eki_port;
-    std::string eki_port_;
-    node->get_parameter("eki_port", eki_port);
-    eki_port_ = std::to_string(eki_port);
+    int eki_io_port;
+    std::string eki_io_port_;
+    node->get_parameter("eki_io_port", eki_io_port);
+    eki_io_port_ = std::to_string(eki_io_port);
     int n_io;
     node->get_parameter("n_io",n_io);
-    kuka_eki_io_interface::KukaEkiIOInterface io_interface(robot_ip.c_str(), eki_port_.c_str(), n_io);
+    kuka_eki_io_interface::KukaEkiIOInterface io_interface(robot_ip.c_str(), eki_io_port_.c_str(), n_io);
 
     const std::vector<int> io_pins_cmd{7, 8};
     const std::vector<int> io_modes_cmd{2, 2};

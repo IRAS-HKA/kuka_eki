@@ -55,6 +55,12 @@ RUN cd /home/"$USER"/ws_moveit2/src && git clone https://github.com/ros-planning
 
 #RUN cd /home/"$USER"/ws_moveit2/src/geometric_shapes && git checkout foxy
 RUN cd /home/$USER/ws_moveit2 && . /opt/ros/$ROS_DISTRO/setup.sh && colcon build --event-handlers desktop_notification- status- --cmake-args -DCMAKE_BUILD_TYPE=Release
+
+USER root 
+RUN DEBIAN_FRONTEND=noninteractive \
+	apt update && \
+	apt install -y ros-$ROS_DISTRO-rqt*
+USER $USER 
 RUN echo "source /home/$USER/ws_moveit2/install/setup.bash" >> /home/$USER/.bashrc
 
 RUN mkdir -p /home/"$USER"/ros_ws/src

@@ -35,7 +35,7 @@ def generate_launch_description():
     ))
 
     declared_arguments.append(DeclareLaunchArgument(
-        "robot_port",
+        "eki_robot_port",
         default_value="54600",
         description="Port by which the robot can be reached."
     ))
@@ -44,7 +44,7 @@ def generate_launch_description():
     robot_description_file = LaunchConfiguration("robot_description_file")
     use_fake_hardware = LaunchConfiguration("use_fake_hardware")
     robot_ip = LaunchConfiguration("robot_ip")
-    robot_port = LaunchConfiguration("robot_port")
+    eki_robot_port = LaunchConfiguration("eki_robot_port")
 
     robot_description_content = Command(
         [
@@ -59,8 +59,8 @@ def generate_launch_description():
             "robot_ip:=",
             robot_ip,
             " ",
-            "robot_port:=",
-            robot_port,
+            "eki_robot_port:=",
+            eki_robot_port,
         ]
     )
     robot_description = {"robot_description": robot_description_content}

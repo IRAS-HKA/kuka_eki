@@ -1,4 +1,5 @@
 // Copyright 2020 ros2_control Development Team
+// Modifications copyright (c) 2021 Gergely Sóti
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -207,7 +208,7 @@ namespace kuka_eki_hw_interface
         RCLCPP_INFO(rclcpp::get_logger("KukaEkiHardwareInterface"), "Starting ...please wait.......................................................................................................................");
 
         eki_server_address_ = info_.hardware_parameters["robot_ip"];
-        eki_server_port_ = info_.hardware_parameters["robot_port"];
+        eki_server_port_ = info_.hardware_parameters["eki_robot_port"];
         RCLCPP_INFO(rclcpp::get_logger("KukaEkiHardwareInterface"), eki_server_address_);
         RCLCPP_INFO(rclcpp::get_logger("KukaEkiHardwareInterface"), eki_server_port_);
         deadline_.reset(new boost::asio::deadline_timer(ios_));
