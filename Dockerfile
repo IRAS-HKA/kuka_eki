@@ -50,18 +50,22 @@ RUN echo "export ROS_DOMAIN_ID=${DOMAIN_ID}" >> /etc/bash.bashrc
 USER $USER 
 RUN rosdep update
 
-RUN mkdir -p /home/"$USER"/ws_moveit2/src
-RUN cd /home/"$USER"/ws_moveit2/src && git clone https://github.com/ros-planning/moveit2.git -b foxy && vcs import < moveit2/moveit2.repos && rosdep install -r --from-paths . --ignore-src --rosdistro foxy -y
+#RUN mkdir -p /home/"$USER"/ws_moveit2/src
+#RUN cd /home/"$USER"/ws_moveit2/src && git clone https://github.com/ros-planning/moveit2.git -b foxy && vcs import < moveit2/moveit2.repos && rosdep install -r --from-paths . --ignore-src --rosdistro foxy -y
 
 #RUN cd /home/"$USER"/ws_moveit2/src/geometric_shapes && git checkout foxy
-RUN cd /home/$USER/ws_moveit2 && . /opt/ros/$ROS_DISTRO/setup.sh && colcon build --event-handlers desktop_notification- status- --cmake-args -DCMAKE_BUILD_TYPE=Release
+#RUN cd /home/$USER/ws_moveit2 && . /opt/ros/$ROS_DISTRO/setup.sh && colcon build --event-handlers desktop_notification- status- --cmake-args -DCMAKE_BUILD_TYPE=Release
 
 USER root 
 RUN DEBIAN_FRONTEND=noninteractive \
 	apt update && \
-	apt install -y ros-$ROS_DISTRO-rqt*
+	apt install -y ros-$ROS_DISTRO-moveit ros-$ROS_DISTRO-rqt*
+RUN DEBIAN_FRONTEND=noninteractive \
+	apt update && \
+	apt install -y ros-$ROS_DISTRO-xacro ros-$ROS_DISTRO-joint-trajectory-controller ros-$ROS_DISTRO-joint-state-broadcaster
+
 USER $USER 
-RUN echo "source /home/$USER/ws_moveit2/install/setup.bash" >> /home/$USER/.bashrc
+RUN #echo "source /home/$USER/ws_moveit2/install/setup.bash" >> /home/$USER/.bashrc
 
 RUN mkdir -p /home/"$USER"/ros_ws/src
 RUN cd /home/"$USER"/ros_ws && colcon build

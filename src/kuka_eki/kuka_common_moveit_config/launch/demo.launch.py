@@ -213,14 +213,14 @@ def generate_launch_description():
         },
     )
 
-    # Static TF
-    static_tf = Node(
-        package="tf2_ros",
-        executable="static_transform_publisher",
-        name="static_transform_publisher",
-        output="log",
-        arguments=["0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "world", "base_link"],
-    )
+    # # Static TF
+    # static_tf = Node(
+    #     package="tf2_ros",
+    #     executable="static_transform_publisher",
+    #     name="static_transform_publisher",
+    #     output="log",
+    #     arguments=["0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "world", "base_link"],
+    # )
 
     # Load controllers
     load_controllers = []
@@ -251,7 +251,7 @@ def generate_launch_description():
         declared_arguments + [
             db_arg,
             rviz_node,
-            static_tf,
+            # static_tf,
             robot_state_publisher,
             run_move_group_node,
             ros2_control_node,
