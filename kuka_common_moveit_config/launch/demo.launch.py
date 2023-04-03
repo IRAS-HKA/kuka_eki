@@ -247,6 +247,24 @@ def generate_launch_description():
         condition=IfCondition(db_config)
     )
 
+    kinematics_yaml = load_yaml("kuka_common_moveit_config", "config/kinematics.yaml")
+    robot_description_kinematics = {"robot_description_kinematics": kinematics_yaml}
+
+    servo_yaml = load_yaml(get_package_share_directory(robot_description_package), "config/kuka_servo_config.yaml")
+    servo_params = {"moveit_servo": servo_yaml}
+
+    servo_node = Node(
+        package="transport_servo",
+        executable="servo_server",
+        parameters=[
+            servo_params,
+            robot_description,
+            robot_description_semantic,
+            robot_description_kinematics,
+        ],
+        output="screen",
+    )
+
     return LaunchDescription(
         declared_arguments + [
             db_arg,
@@ -256,6 +274,7 @@ def generate_launch_description():
             run_move_group_node,
             ros2_control_node,
             mongodb_server_node,
+            servo_node
         ]
         + load_controllers
     )
