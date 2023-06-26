@@ -21,6 +21,7 @@ find_package(Boost REQUIRED COMPONENTS system)
 find_package(tinyxml_vendor REQUIRED)
 find_package(TinyXML REQUIRED)
 find_package(hardware_interface REQUIRED)
+find_package(angles REQUIRED)
 find_package(pluginlib REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_lifecycle REQUIRED)
@@ -57,6 +58,7 @@ ament_target_dependencies(
   rclcpp
   rclcpp_lifecycle
   TinyXML
+  angles
 )
 pluginlib_export_plugin_description_file(hardware_interface ros2_control_kuka_eki.xml)
 

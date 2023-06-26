@@ -22,46 +22,69 @@
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 #include <boost/array.hpp>
-#include <angles/angles.h>
+#include "angles/angles.h"
 
-#include "tinyxml.h"
-#include "hardware_interface/base_interface.hpp"
-#include "hardware_interface/handle.hpp"
+// ros2_control hardware_interface
 #include "hardware_interface/hardware_info.hpp"
 #include "hardware_interface/system_interface.hpp"
 #include "hardware_interface/types/hardware_interface_return_values.hpp"
-#include "hardware_interface/types/hardware_interface_status_values.hpp"
-#include "rclcpp/macros.hpp"
-#include "kuka_eki_hw_interface/visibility_control.h"
+#include "hardware_interface/visibility_control.h"
 
+#include "tinyxml.h"
+//#include "hardware_interface/system_interface.hpp"
+//#include "hardware_interface/handle.hpp"
+//#include "hardware_interface/hardware_info.hpp"
+//#include "hardware_interface/system_interface.hpp"
+//#include "hardware_interface/types/hardware_interface_return_values.hpp"
+//#include "hardware_interface/types/lifecycle_state_names.hpp"
+//#include "rclcpp/macros.hpp"
+//#include "kuka_eki_hw_interface/visibility_control.h"
+
+// ROS
+#include "rclcpp/macros.hpp"
+#include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
+#include "rclcpp_lifecycle/state.hpp"
 
 namespace kuka_eki_hw_interface
 {
-    class KukaEkiHardwareInterface : public hardware_interface::BaseInterface<hardware_interface::SystemInterface>
+    class KukaEkiHardwareInterface : public hardware_interface::SystemInterface
     {
         public:
             RCLCPP_SHARED_PTR_DEFINITIONS(KukaEkiHardwareInterface)
+            virtual ~KukaEkiHardwareInterface();
 
-            ROS2_CONTROL_KUKA_EKI_HW_PUBLIC
-            hardware_interface::return_type configure(const hardware_interface::HardwareInfo & info) override;
+            hardware_interface::CallbackReturn on_init(const hardware_interface::HardwareInfo& system_info) final;
 
-            ROS2_CONTROL_KUKA_EKI_HW_PUBLIC
-            std::vector<hardware_interface::StateInterface> export_state_interfaces() override;
+            std::vector<hardware_interface::StateInterface> export_state_interfaces() final;
 
-            ROS2_CONTROL_KUKA_EKI_HW_PUBLIC
-            std::vector<hardware_interface::CommandInterface> export_command_interfaces() override;
+            std::vector<hardware_interface::CommandInterface> export_command_interfaces() final;
 
-            ROS2_CONTROL_KUKA_EKI_HW_PUBLIC
-            hardware_interface::return_type start() override;
+            hardware_interface::CallbackReturn on_activate(const rclcpp_lifecycle::State& previous_state) final;
+            hardware_interface::CallbackReturn on_deactivate(const rclcpp_lifecycle::State& previous_state) final;
 
-            ROS2_CONTROL_KUKA_EKI_HW_PUBLIC
-            hardware_interface::return_type stop() override;
+            hardware_interface::return_type read(const rclcpp::Time& time, const rclcpp::Duration& period) final;
+            hardware_interface::return_type write(const rclcpp::Time& time, const rclcpp::Duration& period) final;
 
-            ROS2_CONTROL_KUKA_EKI_HW_PUBLIC
-            hardware_interface::return_type read() override;
-
-            ROS2_CONTROL_KUKA_EKI_HW_PUBLIC
-            hardware_interface::return_type write() override;
+//            ROS2_CONTROL_KUKA_EKI_HW_PUBLIC
+//            hardware_interface::return_type configure(const hardware_interface::HardwareInfo & info);
+//
+//            ROS2_CONTROL_KUKA_EKI_HW_PUBLIC
+//            std::vector<hardware_interface::StateInterface> export_state_interfaces() override;
+//
+//            ROS2_CONTROL_KUKA_EKI_HW_PUBLIC
+//            std::vector<hardware_interface::CommandInterface> export_command_interfaces() override;
+//
+//            ROS2_CONTROL_KUKA_EKI_HW_PUBLIC
+//            hardware_interface::return_type start();
+//
+//            ROS2_CONTROL_KUKA_EKI_HW_PUBLIC
+//            hardware_interface::return_type stop();
+//
+//            ROS2_CONTROL_KUKA_EKI_HW_PUBLIC
+//            hardware_interface::return_type read();
+//
+//            ROS2_CONTROL_KUKA_EKI_HW_PUBLIC
+//            hardware_interface::return_type write();
 
         private:
             // Store the command for the simulated robot
@@ -70,6 +93,7 @@ namespace kuka_eki_hw_interface
 
             std::string eki_server_address_;
             std::string eki_server_port_;
+
             int eki_cmd_buff_len_;
             int eki_max_cmd_buff_len_ = 5;  // by default, limit command buffer to 5 (size of advance run in KRL)
 //

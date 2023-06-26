@@ -21,26 +21,22 @@
 #include "kuka_eki_io_interface/kuka_eki_io_interface.h"
 
 
-int main(int argc, char * argv[])
+int main(int argc,  char **argv)
 {
     rclcpp::init(argc, argv);
     std::shared_ptr<rclcpp::Node> node = rclcpp::Node::make_shared("eki_io_node");
 
     rclcpp::Rate loop_rate(2);
-    node->declare_parameter("robot_ip");
-    node->declare_parameter("eki_io_port");
-    node->declare_parameter("n_io");
+    node->declare_parameter("robot_ip", "0.0.0.0");
+    node->declare_parameter("eki_io_port", 54601);
+    node->declare_parameter("n_io", 2);
 
-    std::string robot_ip;
-    node->get_parameter("robot_ip", robot_ip);
-    int eki_io_port;
-    std::string eki_io_port_;
-    node->get_parameter("eki_io_port", eki_io_port);
-    eki_io_port_ = std::to_string(eki_io_port);
-    int n_io;
-    node->get_parameter("n_io",n_io);
+    std::string robot_ip = node->get_parameter("robot_ip").as_string();
+    int eki_io_port = node->get_parameter("eki_io_port").as_int();
+    std::string eki_io_port_ = std::to_string(eki_io_port);
+    int n_io = node->get_parameter("n_io").as_int();
     kuka_eki_io_interface::KukaEkiIOInterface io_interface(robot_ip.c_str(), eki_io_port_.c_str(), n_io);
-
+//
     const std::vector<int> io_pins_cmd{7, 8};
     const std::vector<int> io_modes_cmd{2, 2};
     const std::vector<bool> target_ios_cmd{ false, true};
@@ -68,7 +64,7 @@ int main(int argc, char * argv[])
         io_interface.eki_write_command(io_pins_cmd, io_modes_cmd, target_ios_cmd);
     }
 
-    RCLCPP_INFO(node->get_logger(), "Shutting down.");
+    RCLCPP_INFO(rclcpp::get_logger("eki_io_node"), "Shutting down.");
     rclcpp::shutdown();
     return 0;
 }

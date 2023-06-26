@@ -26,12 +26,21 @@
 
 namespace kuka_eki_hw_interface
 {
-    hardware_interface::return_type KukaEkiHardwareInterface::configure(const hardware_interface::HardwareInfo & info)
+
+    KukaEkiHardwareInterface::~KukaEkiHardwareInterface()
     {
-        if (configure_default(info) != hardware_interface::return_type::OK)
-        {
-            return hardware_interface::return_type::ERROR;
+      // If the controller manager is shutdown via Ctrl + C the on_deactivate methods won't be called.
+      // We therefore need to make sure to actually deactivate the communication
+      on_deactivate(rclcpp_lifecycle::State());
+    }
+
+    hardware_interface::CallbackReturn KukaEkiHardwareInterface::on_init(const hardware_interface::HardwareInfo & info)
+    {
+        if (hardware_interface::SystemInterface::on_init(info) != hardware_interface::CallbackReturn::SUCCESS) {
+            return hardware_interface::CallbackReturn::ERROR;
         }
+
+        info_ = info;
 
         hw_states_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
         hw_commands_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
@@ -42,9 +51,9 @@ namespace kuka_eki_hw_interface
             if (joint.command_interfaces.size() != 1)
             {
                 RCLCPP_FATAL(rclcpp::get_logger("KukaEkiHardwareInterface"),
-                    "Joint '%s' has %d command interfaces found. 1 expected.", joint.name.c_str(),
+                    "Joint '%s' has %ld command interfaces found. 1 expected.", joint.name.c_str(),
                     joint.command_interfaces.size());
-                return hardware_interface::return_type::ERROR;
+                return hardware_interface::CallbackReturn::ERROR;
             }
 
             if (joint.command_interfaces[0].name != hardware_interface::HW_IF_POSITION)
@@ -52,15 +61,15 @@ namespace kuka_eki_hw_interface
                 RCLCPP_FATAL(rclcpp::get_logger("KukaEkiHardwareInterface"),
                     "Joint '%s' have %s command interfaces found. '%s' expected.", joint.name.c_str(),
                     joint.command_interfaces[0].name.c_str(), hardware_interface::HW_IF_POSITION);
-                return hardware_interface::return_type::ERROR;
+                return hardware_interface::CallbackReturn::ERROR;
             }
 
             if (joint.state_interfaces.size() != 1)
             {
                 RCLCPP_FATAL(rclcpp::get_logger("KukaEkiHardwareInterface"),
-                    "Joint '%s' has %d state interface. 1 expected.", joint.name.c_str(),
+                    "Joint '%s' has %ld state interface. 1 expected.", joint.name.c_str(),
                     joint.state_interfaces.size());
-                return hardware_interface::return_type::ERROR;
+                return hardware_interface::CallbackReturn::ERROR;
             }
 
             if (joint.state_interfaces[0].name != hardware_interface::HW_IF_POSITION)
@@ -68,12 +77,12 @@ namespace kuka_eki_hw_interface
                 RCLCPP_FATAL(rclcpp::get_logger("KukaEkiHardwareInterface"),
                     "Joint '%s' have %s state interface. '%s' expected.", joint.name.c_str(),
                     joint.state_interfaces[0].name.c_str(), hardware_interface::HW_IF_POSITION);
-                return hardware_interface::return_type::ERROR;
+                return hardware_interface::CallbackReturn::ERROR;
             }
         }
 
-        status_ = hardware_interface::status::CONFIGURED;
-        return hardware_interface::return_type::OK;
+//        status_ = hardware_interface::status::CONFIGURED;
+        return hardware_interface::CallbackReturn::SUCCESS;
     }
 
     std::vector<hardware_interface::StateInterface> KukaEkiHardwareInterface::export_state_interfaces()
@@ -203,14 +212,14 @@ namespace kuka_eki_hw_interface
       return true;
     }
 
-    hardware_interface::return_type KukaEkiHardwareInterface::start()
+    hardware_interface::CallbackReturn KukaEkiHardwareInterface::on_activate(const rclcpp_lifecycle::State& previous_state)
     {
-        RCLCPP_INFO(rclcpp::get_logger("KukaEkiHardwareInterface"), "Starting ...please wait.......................................................................................................................");
+        RCLCPP_INFO(rclcpp::get_logger("KukaEkiHardwareInterface"), "Starting ... please wait...");
 
         eki_server_address_ = info_.hardware_parameters["robot_ip"];
         eki_server_port_ = info_.hardware_parameters["eki_robot_port"];
-        RCLCPP_INFO(rclcpp::get_logger("KukaEkiHardwareInterface"), eki_server_address_);
-        RCLCPP_INFO(rclcpp::get_logger("KukaEkiHardwareInterface"), eki_server_port_);
+        RCLCPP_INFO(rclcpp::get_logger("KukaEkiHardwareInterface"), eki_server_address_.c_str());
+        RCLCPP_INFO(rclcpp::get_logger("KukaEkiHardwareInterface"), eki_server_port_.c_str());
         deadline_.reset(new boost::asio::deadline_timer(ios_));
         eki_server_socket_.reset(new boost::asio::ip::udp::socket(ios_, boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), 0)));
 
@@ -236,31 +245,28 @@ namespace kuka_eki_hw_interface
                               + std::to_string(eki_read_state_timeout_) + " seconds.  Make sure eki_hw_interface is running "
                               "on the robot controller and all configurations are correct.";
             RCLCPP_ERROR(
-                rclcpp::get_logger("KukaEkiHardwareInterface"), msg);
+                rclcpp::get_logger("KukaEkiHardwareInterface"), msg.c_str());
             throw std::runtime_error(msg);
         }
         hw_commands_ = joint_position;
         hw_states_ = joint_position;
 
-        status_ = hardware_interface::status::STARTED;
+        RCLCPP_INFO(rclcpp::get_logger("KukaEkiHardwareInterface"), "System Successfully started!");
 
-        RCLCPP_INFO(rclcpp::get_logger("KukaEkiHardwareInterface"), "System Successfully started!.......................................................................................................................");
-
-        return hardware_interface::return_type::OK;
+        return hardware_interface::CallbackReturn::SUCCESS;
     }
 
-    hardware_interface::return_type KukaEkiHardwareInterface::stop()
+    hardware_interface::CallbackReturn KukaEkiHardwareInterface::on_deactivate(const rclcpp_lifecycle::State& previous_state)
     {
         RCLCPP_INFO(rclcpp::get_logger("KukaEkiHardwareInterface"), "Stopping ...please wait...");
 
-        status_ = hardware_interface::status::STOPPED;
-
         RCLCPP_INFO(rclcpp::get_logger("KukaEkiHardwareInterface"), "System successfully stopped!");
 
-        return hardware_interface::return_type::OK;
+        return hardware_interface::CallbackReturn::SUCCESS;
     }
 
-    hardware_interface::return_type KukaEkiHardwareInterface::read()
+    hardware_interface::return_type KukaEkiHardwareInterface::read(const rclcpp::Time& time,
+                                                                   const rclcpp::Duration& period)
     {
         std::vector<double> joint_position;
         std::vector<double> joint_velocity;
@@ -274,7 +280,7 @@ namespace kuka_eki_hw_interface
                               + std::to_string(eki_read_state_timeout_) + " seconds.  Make sure eki_hw_interface is running "
                               "on the robot controller and all configurations are correct.";
             RCLCPP_ERROR(
-                rclcpp::get_logger("KukaEkiHardwareInterface"), msg);
+                rclcpp::get_logger("KukaEkiHardwareInterface"), msg.c_str());
             throw std::runtime_error(msg);
         }
         hw_states_ = joint_position;
@@ -282,7 +288,8 @@ namespace kuka_eki_hw_interface
         return hardware_interface::return_type::OK;
     }
 
-    hardware_interface::return_type KukaEkiHardwareInterface::write()
+    hardware_interface::return_type KukaEkiHardwareInterface::write(const rclcpp::Time& time,
+                                                                   const rclcpp::Duration& period)
     {
         if (eki_cmd_buff_len_ < eki_max_cmd_buff_len_)
             eki_write_command(hw_commands_);
