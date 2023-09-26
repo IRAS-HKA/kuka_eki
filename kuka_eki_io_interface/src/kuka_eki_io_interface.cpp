@@ -104,7 +104,7 @@ namespace kuka_eki_io_interface
             std::cout << "3" << std::endl;
             return false;
         }
-        xml_in.Print();
+        // xml_in.Print();
         char io_name[] = "IO1";
         for (int i = 0; i < n_io_; ++i)
         {
@@ -151,7 +151,7 @@ namespace kuka_eki_io_interface
             io_name[2]++;
         }
         xml_out.LinkEndChild(io_command);
-        xml_out.Print();
+        // xml_out.Print();
         TiXmlPrinter xml_printer;
         xml_printer.SetStreamPrinting();  // no linebreaks
         xml_out.Accept(&xml_printer);
