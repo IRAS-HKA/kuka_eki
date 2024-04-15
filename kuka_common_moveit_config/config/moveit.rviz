@@ -1,11 +1,15 @@
 Panels:
   - Class: rviz_common/Displays
-    Help Height: 78
+    Help Height: 0
     Name: Displays
     Property Tree Widget:
-      Expanded: ~
+      Expanded:
+        - /MotionPlanning1
+        - /TF1
+        - /TF1/Frames1
+        - /Image2
       Splitter Ratio: 0.5
-    Tree Height: 337
+    Tree Height: 194
   - Class: rviz_common/Selection
     Name: Selection
   - Class: rviz_common/Tool Properties
@@ -64,8 +68,6 @@ Visualization Manager:
       MoveIt_Planning_Time: 5
       MoveIt_Use_Cartesian_Path: false
       MoveIt_Use_Constraint_Aware_IK: false
-      MoveIt_Warehouse_Host: 127.0.0.1
-      MoveIt_Warehouse_Port: 33829
       MoveIt_Workspace:
         Center:
           X: 0
@@ -98,8 +100,41 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+          camera_rack_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
             Value: true
-          cell_link:
+          cylinder_back_left:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          cylinder_back_right:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          cylinder_front_left:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          cylinder_front_right:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          ejector:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          flange:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          gripper_base:
             Alpha: 1
             Show Axes: false
             Show Trail: false
@@ -134,35 +169,51 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
-          roof:
+          table_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
+          tcp:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          tcp_1:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          tcp_2:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          tcp_3:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          tcp_4:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          tcp_5:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          tcp_6:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          tcp_7:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
           tool0:
             Alpha: 1
             Show Axes: false
             Show Trail: false
-          wall_1:
+          world:
             Alpha: 1
             Show Axes: false
             Show Trail: false
-            Value: true
-          wall_2:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          wall_3:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          wall_4:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
         Loop Animation: false
         Robot Alpha: 0.5
         Robot Color: 150; 50; 150
@@ -172,6 +223,7 @@ Visualization Manager:
         State Display Time: 0.05 s
         Trail Step Size: 1
         Trajectory Topic: /display_planned_path
+        Use Sim Time: false
       Planning Metrics:
         Payload: 1
         Show Joint Torques: false
@@ -186,7 +238,7 @@ Visualization Manager:
         Interactive Marker Size: 0
         Joint Violation Color: 255; 0; 255
         Planning Group: manipulator
-        Query Goal State: true
+        Query Goal State: false
         Query Start State: false
         Show Workspace: false
         Start State Alpha: 1
@@ -221,8 +273,41 @@ Visualization Manager:
             Alpha: 1
             Show Axes: false
             Show Trail: false
+          camera_rack_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
             Value: true
-          cell_link:
+          cylinder_back_left:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          cylinder_back_right:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          cylinder_front_left:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          cylinder_front_right:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          ejector:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          flange:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          gripper_base:
             Alpha: 1
             Show Axes: false
             Show Trail: false
@@ -257,40 +342,199 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
-          roof:
+          table_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
             Value: true
+          tcp:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          tcp_1:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          tcp_2:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          tcp_3:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          tcp_4:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          tcp_5:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          tcp_6:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+          tcp_7:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
           tool0:
             Alpha: 1
             Show Axes: false
             Show Trail: false
-          wall_1:
+          world:
             Alpha: 1
             Show Axes: false
             Show Trail: false
-            Value: true
-          wall_2:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          wall_3:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          wall_4:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
         Robot Alpha: 1
         Show Robot Collision: false
         Show Robot Visual: true
       Value: true
       Velocity_Scaling_Factor: 0.1
+    - Class: rviz_default_plugins/TF
+      Enabled: true
+      Frame Timeout: 15
+      Frames:
+        All Enabled: false
+        base:
+          Value: false
+        base_link:
+          Value: false
+        camera:
+          Value: true
+        camera_rack_link:
+          Value: false
+        cylinder_back_left:
+          Value: false
+        cylinder_back_right:
+          Value: false
+        cylinder_front_left:
+          Value: false
+        cylinder_front_right:
+          Value: false
+        ejector:
+          Value: false
+        flange:
+          Value: false
+        gripper_base:
+          Value: false
+        link_1:
+          Value: false
+        link_2:
+          Value: false
+        link_3:
+          Value: false
+        link_4:
+          Value: false
+        link_5:
+          Value: false
+        link_6:
+          Value: false
+        table_link:
+          Value: false
+        tcp:
+          Value: false
+        tcp_1:
+          Value: true
+        tcp_2:
+          Value: false
+        tcp_3:
+          Value: false
+        tcp_4:
+          Value: false
+        tcp_5:
+          Value: false
+        tcp_6:
+          Value: false
+        tcp_7:
+          Value: false
+        tool0:
+          Value: false
+        world:
+          Value: true
+      Marker Scale: 1
+      Name: TF
+      Show Arrows: true
+      Show Axes: true
+      Show Names: true
+      Tree:
+        world:
+          base_link:
+            base:
+              {}
+            link_1:
+              link_2:
+                link_3:
+                  link_4:
+                    ejector:
+                      {}
+                    link_5:
+                      link_6:
+                        flange:
+                          gripper_base:
+                            cylinder_back_left:
+                              {}
+                            cylinder_back_right:
+                              {}
+                            cylinder_front_left:
+                              {}
+                            cylinder_front_right:
+                              {}
+                            tcp:
+                              {}
+                            tcp_1:
+                              {}
+                            tcp_2:
+                              {}
+                            tcp_3:
+                              {}
+                            tcp_4:
+                              {}
+                            tcp_5:
+                              {}
+                            tcp_6:
+                              {}
+                            tcp_7:
+                              {}
+                          tool0:
+                            {}
+          camera:
+            {}
+          camera_rack_link:
+            {}
+          table_link:
+            {}
+      Update Interval: 0
+      Value: true
+    - Class: rviz_default_plugins/Image
+      Enabled: false
+      Max Value: 1
+      Median window: 5
+      Min Value: 0
+      Name: Image
+      Normalize Range: true
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /detect_and_transform_node/result_image
+      Value: false
+    - Class: rviz_default_plugins/Image
+      Enabled: true
+      Max Value: 1
+      Median window: 5
+      Min Value: 0
+      Name: Image
+      Normalize Range: true
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /detect_and_transform_node/result_image
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -306,6 +550,9 @@ Visualization Manager:
     - Class: rviz_default_plugins/Measure
       Line color: 128; 128; 0
     - Class: rviz_default_plugins/SetInitialPose
+      Covariance x: 0.25
+      Covariance y: 0.25
+      Covariance yaw: 0.06853891909122467
       Topic:
         Depth: 5
         Durability Policy: Volatile
@@ -334,43 +581,45 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 1.6461073160171509
+      Distance: 3.4943716526031494
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.09409921616315842
-        Y: 0.0935380682349205
-        Z: 0.1795470118522644
+        X: 0.1701556295156479
+        Y: 0.38886648416519165
+        Z: 0.2208138108253479
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.4303983449935913
+      Pitch: 0.05539825186133385
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 5.93857479095459
+      Yaw: 0.1453886777162552
     Saved: ~
 Window Geometry:
   Displays:
+    collapsed: true
+  Height: 1043
+  Hide Left Dock: true
+  Hide Right Dock: false
+  Image:
     collapsed: false
-  Height: 1016
-  Hide Left Dock: false
-  Hide Right Dock: true
   MotionPlanning:
-    collapsed: false
+    collapsed: true
   MotionPlanning - Trajectory Slider:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd0000000400000000000001ca000003a2fc020000000cfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003b000001da000000c700fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000003c005400720061006a006500630074006f007200790020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000003f00fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067010000021b000001c20000016900ffffff000000010000010f000003abfc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000003b000003ab000000a000fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000004420000003efc0100000002fb0000000800540069006d00650100000000000004420000000000000000fb0000000800540069006d0065010000000000000450000000000000000000000568000003a200000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000400000000000001ca000003bdfc020000000cfb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed0000043800000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073000000003b000000fd000000c700fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000003c005400720061006a006500630074006f007200790020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb000000280020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000003f00fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067000000013e000002ba0000016900ffffff00000001000003f5000003bdfc0200000004fb0000000a0049006d006100670065010000003b000003bd0000002800fffffffb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fc0000003b000003bd0000000000fffffffaffffffff0100000002fb0000000a0049006d0061006700650000000000ffffffff0000005a00fffffffb0000000a0056006900650077007300000006710000010f0000010000fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b20000000000000000000000020000078000000148fc0100000001fb0000000a00560069006500770073030000004e00000080000002e10000019700000003000004420000003efc0100000002fb0000000800540069006d00650100000000000004420000000000000000fb0000000800540069006d0065010000000000000450000000000000000000000385000003bd00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Tool Properties:
     collapsed: false
   Views:
-    collapsed: true
-  Width: 1848
-  X: 72
-  Y: 27
+    collapsed: false
+  Width: 1920
+  X: 1895
+  Y: 0
