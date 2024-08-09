@@ -72,6 +72,12 @@ def generate_launch_description():
         default_value="54600",
         description="Port by which the robot can be reached."
     ))
+    declared_arguments.append(DeclareLaunchArgument(
+        "robot_controller",
+        default_value="gripper_controller",
+        choices=["gripper_controller", "position_trajectory_controller", "joint_state_controller"],
+        description="Robot controller to start.",
+    ))
 
     robot_description_package = LaunchConfiguration("robot_description_package")
     robot_description_file = LaunchConfiguration("robot_description_file")
@@ -79,7 +85,7 @@ def generate_launch_description():
     use_fake_hardware = LaunchConfiguration("use_fake_hardware")
     robot_ip = LaunchConfiguration("robot_ip")
     eki_robot_port = LaunchConfiguration("eki_robot_port")
-
+    robot_controller = LaunchConfiguration("robot_controller")
     robot_description_content = Command(
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
@@ -132,6 +138,22 @@ def generate_launch_description():
     )
     ompl_planning_pipeline_config["move_group"].update(ompl_planning_yaml)
 
+    # Stomp
+    stomp_planning_pipeline_config = {
+        "move_group": {
+            "planning_plugin": "stomp_moveit/StompPlanner",
+            "request_adapters": """default_planning_request_adapters/ResolveConstraintFrames default_planning_request_adapters/ValidateWorkspaceBounds default_planning_request_adapters/CheckStartStateBounds default_planning_request_adapters/CheckStartStateCollision""",
+            # "request_adapters": """default_planner_request_adapters/AddTimeOptimalParameterization default_planner_request_adapters/ResolveConstraintFrames default_planner_request_adapters/FixWorkspaceBounds default_planner_request_adapters/FixStartStateBounds default_planner_request_adapters/FixStartStateCollision default_planner_request_adapters/FixStartStatePathConstraints""",
+            # "start_state_max_bounds_error": 0.1,
+        }
+    }
+
+    stomp_planning_pipeline_config_planning_yaml = load_yaml(
+        "kuka_common_moveit_config", "config/stomp_planning.yaml"
+    )
+
+    stomp_planning_pipeline_config["move_group"].update(stomp_planning_pipeline_config_planning_yaml)
+
     # Trajectory Execution Functionality
     moveit_simple_controllers_yaml = load_yaml(
         "kuka_common_moveit_config", "config/kuka_controllers.yaml"
@@ -165,6 +187,7 @@ def generate_launch_description():
             robot_description_semantic,
             kinematics_yaml,
             ompl_planning_pipeline_config,
+            # stomp_planning_pipeline_config,
             trajectory_execution,
             moveit_controllers,
             planning_scene_monitor_parameters,
@@ -184,6 +207,8 @@ def generate_launch_description():
             robot_description,
             robot_description_semantic,
             ompl_planning_pipeline_config,
+
+            # stomp_planning_pipeline_config,
             kinematics_yaml,
         ],
     )
@@ -212,6 +237,16 @@ def generate_launch_description():
             "stderr": "screen",
         },
     )
+    robot_controllers = [robot_controller]
+    robot_controller_spawners = []
+    for controller in robot_controllers:
+        robot_controller_spawners += [
+            Node(
+                package="controller_manager",
+                executable="spawner",
+                arguments=[controller, "-c", "/controller_manager"],
+            )
+        ]
 
     # # Static TF
     # static_tf = Node(
@@ -224,7 +259,7 @@ def generate_launch_description():
 
     # Load controllers
     load_controllers = []
-    for controller in ["position_trajectory_controller", "joint_state_broadcaster"]:
+    for controller in ["position_trajectory_controller", "joint_state_broadcaster", "gripper_controller"]:
         load_controllers += [
             ExecuteProcess(
                 cmd=["ros2 run controller_manager spawner {}".format(controller)],
